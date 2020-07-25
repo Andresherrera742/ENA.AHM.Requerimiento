@@ -21,7 +21,7 @@ public class DepartamentoDAO extends DAOBase{
     
         public List<DepartamentoModel> getDepartamentos(int idGerencia) {
 
-        List<DepartamentoModel> departamento = new ArrayList<DepartamentoModel>();
+        List<DepartamentoModel> departamentos = new ArrayList<DepartamentoModel>();
         Connection conn = null;
         PreparedStatement pst = null;
         ResultSet rs = null;
@@ -29,19 +29,20 @@ public class DepartamentoDAO extends DAOBase{
         try {
             conn = getConnection();
             StringBuilder query = getQuerySelect();
+            query.append( " WHERE gerenciaId = ? ");                    
             pst = conn.prepareStatement(query.toString());
             rs = pst.executeQuery();
 
             while (rs.next()) {
                 DepartamentoModel model = toModel( rs );
-                departamento.add(model);
+                departamentos.add(model);
             }
         } catch (SQLException e) {
             writeErrorConsole(e);
         } finally {
             closeConnection(conn, pst, rs);
         }
-        return departamento;
+        return departamentos;
     }
      
      public DepartamentoModel getDepartamento( int id) {

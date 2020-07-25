@@ -47,6 +47,10 @@ public class RequerimientoController extends HttpServlet {
         String cboAreaResolutora = request.getParameter("cboAreaResolutora");
         String cboResolutor = request.getParameter("cboResolutor");
         
+        if( accion == null ){
+            accion = "";
+        }
+        
         switch (accion) {
 
             //case "index":
@@ -79,7 +83,11 @@ public class RequerimientoController extends HttpServlet {
                 break;
 
             default:
-                if (cboGerencia != "") {
+                if ( cboGerencia != null &&  !"".equals( cboGerencia )) {
+                    cambiarRequerimiento(request, response);
+                }
+                
+                if ( cboAreaResolutora != null &&  !"".equals( cboAreaResolutora )) {
                     cambiarRequerimiento(request, response);
                 }
 
@@ -129,16 +137,25 @@ public class RequerimientoController extends HttpServlet {
     private void nuevoRequerimiento(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        RequerimientoModel requerimiento = new RequerimientoModel();
-        List<GerenciaModel> gerencia = new GerenciaDAO().getGerencia();
-
+        RequerimientoModel requerimiento = new RequerimientoModel();       
+        cargaCboBase( request, response);
         request.setAttribute("requerimiento", requerimiento);
-        request.setAttribute("gerencia", gerencia);
+       
 
         request.getRequestDispatcher("ingresorequerimientovista.jsp").forward(request, response);
     }
     
-        private void cerrarRequerimiento(HttpServletRequest request, HttpServletResponse response)
+     private void cargaCboBase(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+       
+        List<GerenciaModel> gerencias = new GerenciaDAO().getGerencia();
+        List<AreaResolutoraModel> areasResolutoras = new AreaResolutoraDAO().getAreaResolutora();
+        request.setAttribute("gerencias", gerencias);
+        request.setAttribute("areaResolutoras", areasResolutoras);
+     }
+    
+    
+      private void cerrarRequerimiento(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         int id = Integer.parseInt(request.getParameter("id"));
@@ -257,62 +274,60 @@ public class RequerimientoController extends HttpServlet {
     private void cambiarRequerimiento(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String cboGerencia = request.getParameter("cboGerencia");
-        List<DepartamentoModel> departamentos = new DepartamentoDAO().getDepartamentos(Integer.parseInt(cboGerencia));
+        int idGerencia = getIDDesdeCombo( request, response,"cboGerencia" );        
+        List<DepartamentoModel> departamentos = new DepartamentoDAO().getDepartamentos(idGerencia);
         
-        String cboAreaResolutora = request.getParameter("cboAreaResolutora");
-        List<ResolutorModel> resolutores = new ResolutorDAO().getResolutores(Integer.parseInt(cboAreaResolutora));
+        int idAreaResolutora = getIDDesdeCombo( request, response,"cboAreaResolutora" );        
+        List<ResolutorModel> resolutores = new ResolutorDAO().getResolutores(idAreaResolutora);
 
         //Mantenemos los datos del empleado para enviar en el request, los sacamos desde los input de la pagina
         RequerimientoModel requerimiento = new RequerimientoModel();
         int id = Integer.parseInt(request.getParameter("hidId"));
         
-        requerimiento.setRequerimientoId(id);
+        requerimiento.setRequerimientoId(id);                
         
-        int idGerencia = Integer.parseInt(request.getParameter("cboGerencia"));
         GerenciaModel gerencia = new GerenciaModel();
         gerencia.setGerenciaId(idGerencia);
         requerimiento.setGerencia(gerencia);
 
-        int idDepartamento = Integer.parseInt(request.getParameter("cboDepartamento"));
+        
+        int idDepartamento = getIDDesdeCombo( request, response,"cboDepartamento" );
         DepartamentoModel departamento = new DepartamentoModel();
         departamento.setDepartamentoId(idDepartamento);
         requerimiento.setDepartamento(departamento);
         
-        int idAreaResolutora = Integer.parseInt(request.getParameter("cboAreaResolutora"));
+        
+       
         AreaResolutoraModel areaResolutora = new AreaResolutoraModel();
         areaResolutora.setAreaResolutoraId(idAreaResolutora);
         requerimiento.setAreaResolutora(areaResolutora);
-
-        int idResolutor = Integer.parseInt(request.getParameter("cboResolutor"));
+        
+        int idResolutor = getIDDesdeCombo( request, response,"cboResolutor" );        
         ResolutorModel resolutor = new ResolutorModel();
         resolutor.setResolutorId(idResolutor);
         requerimiento.setResolutor(resolutor);
         
         requerimiento.setRequerimiento(request.getParameter("txtRequerimiento"));
-        
-        
 
-
-        String idGerenciaString = request.getParameter("cboGerencia");
-        int idGerencias = 0;
-        if (idGerenciaString != null) {
-            if (idGerenciaString != "") {
-                idGerencias = Integer.parseInt(idGerenciaString);
-                requerimiento.setGerencia(new GerenciaDAO().getGerencia(idGerencias));
-            }
-        }
-
-        List<GerenciaModel> gerencias = new GerenciaDAO().getGerencia(); 
-
-        request.setAttribute("requerimiento", requerimiento);
-        request.setAttribute("gerencia", gerencia);
-        request.setAttribute("gerencia", requerimiento.getGerencia().getGerenciaId());
+        request.setAttribute("requerimiento", requerimiento);                
         request.setAttribute("departamentos", departamentos);
+        request.setAttribute("resolutores", resolutores);        
         
-        
+        cargaCboBase( request, response);
 
         request.getRequestDispatcher("ingresorequerimientovista.jsp").forward(request, response);
     }
+    
+    
+     private int getIDDesdeCombo(HttpServletRequest request, HttpServletResponse response, String nameCombo)
+            throws ServletException, IOException {
+        String valor = request.getParameter(nameCombo);
+        int id = 0;
+        if (valor != null && !"".equals(valor)) {
+            id = Integer.parseInt(valor);
+        }
+        return id;
+    }
+    
     
 }

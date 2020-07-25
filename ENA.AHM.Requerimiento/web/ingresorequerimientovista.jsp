@@ -35,7 +35,7 @@
                                 <select name="cboGerencia" class="form-control" required onchange="submit()" >
                                     
                                     <option value=""></option>
-                                    <c:forEach  var="g"  items="${gerencia}" >
+                                    <c:forEach  var="g"  items="${gerencias}" >
                                         
                                         <option value="${gerenciaId}"  
                                             ${g.gerenciaId == requerimiento.getGerencia().getGerenciaId() ? ' selected ' : ' '}>
@@ -69,10 +69,10 @@
                             <div class="form-group">
                                 Area Resolutora
                                 
-                                <select name="cboAreaResolutora" class="form-control" required  >
+                                <select name="cboAreaResolutora" class="form-control" required  onchange="submit()">
                                     
                                     <option value=""></option>
-                                    <c:forEach  var="ar"  items="${areaResolutora}" >
+                                    <c:forEach  var="ar"  items="${areaResolutoras}" >
                                         
                                         <option value="${areaResolutoraId}"
                                             ${ar.areaResolutoraId == requerimiento.getAreaResolutora().getAreaResolutoraId() ? ' selected ' : ' '  } >
@@ -90,7 +90,7 @@
                                 <select name="cboResolutor" class="form-control" required  >
                                     
                                     <option value=""></option>
-                                    <c:forEach  var="r"  items="${resolutor}" >
+                                    <c:forEach  var="r"  items="${resolutores}" >
                                         
                                         <option value="${resolutorId}"
                                             ${r.resolutorId == requerimiento.getResolutor().getResolutorId() ? ' selected ' : ' '  } >
