@@ -43,19 +43,23 @@ public class RequerimientoController extends HttpServlet {
        
         String accion = request.getParameter("action");
         String cboGerencia = request.getParameter("cboGerencia");
+        String cboGerenciaConsulta = request.getParameter("cboGerenciaConsulta");
         String cboDepartamento = request.getParameter("cboDepartamento");
+        String cboDepartamentoConsulta = request.getParameter("cboDepartamentoConsulta");
         String cboAreaResolutora = request.getParameter("cboAreaResolutora");
+        String cboAreaResolutoraConsulta = request.getParameter("cboAreaResolutoraConsulta");
         String cboResolutor = request.getParameter("cboResolutor");
         
+       
         if( accion == null ){
             accion = "";
         }
         
         switch (accion) {
 
-            //case "index":
-             //   inicio(request, response);
-              //  break;
+            case "index":
+                inicio(request, response);
+                break;
 
             case "nuevo":
                 nuevoRequerimiento(request, response);
@@ -86,8 +90,15 @@ public class RequerimientoController extends HttpServlet {
                 if ( cboGerencia != null &&  !"".equals( cboGerencia )) {
                     cambiarRequerimiento(request, response);
                 }
+                if ( cboGerenciaConsulta != null &&  !"".equals( cboGerenciaConsulta )) {
+                    cambiarRequerimiento(request, response);
+                }
                 
                 if ( cboAreaResolutora != null &&  !"".equals( cboAreaResolutora )) {
+                    cambiarRequerimiento(request, response);
+                }
+                
+                if ( cboAreaResolutoraConsulta != null &&  !"".equals( cboAreaResolutoraConsulta )) {
                     cambiarRequerimiento(request, response);
                 }
 
@@ -159,7 +170,7 @@ public class RequerimientoController extends HttpServlet {
             throws ServletException, IOException {
 
         int id = Integer.parseInt(request.getParameter("id"));
-        RequerimientoModel requerimiento = new RequerimientoDAO().getRequerimiento(id);
+        RequerimientoModel requerimiento = new RequerimientoDAO().getRequerimiento(id);//.update(id)
         List<GerenciaModel> gerencia = new GerenciaDAO().getGerencia();
         int idGerencia = requerimiento.getGerencia().getGerenciaId();
         List<DepartamentoModel> departamentos = new DepartamentoDAO().getDepartamentos(idGerencia);
@@ -245,7 +256,7 @@ public class RequerimientoController extends HttpServlet {
         } else {
 
             RequerimientoDAO dao = new RequerimientoDAO();
-            exito = dao.update(model);
+            exito = dao.update(id);
 
             if (!exito) {
                 mensaje = "Error al cerrar Requerimiento";
@@ -265,7 +276,11 @@ public class RequerimientoController extends HttpServlet {
     private void listarRequerimiento(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        List<RequerimientoModel> entidades = new RequerimientoDAO().getRequerimientos();
+        int idGerencia = getIDDesdeCombo(request, response, "cboGerenciaConsulta");
+        int idDepartamento = getIDDesdeCombo(request, response, "cboDepartamentoConsulta");
+        int idAreaResolutora = getIDDesdeCombo(request, response, "cboAreaResolutoraConsulta");
+        
+        List<RequerimientoModel> entidades = new RequerimientoDAO().getRequerimientos(idGerencia, idDepartamento, idAreaResolutora);
         request.setAttribute("requerimientos", entidades);
         request.getRequestDispatcher("requerimientosvista.jsp").forward(request, response);
 
@@ -280,7 +295,7 @@ public class RequerimientoController extends HttpServlet {
         int idAreaResolutora = getIDDesdeCombo( request, response,"cboAreaResolutora" );        
         List<ResolutorModel> resolutores = new ResolutorDAO().getResolutores(idAreaResolutora);
 
-        //Mantenemos los datos del empleado para enviar en el request, los sacamos desde los input de la pagina
+       
         RequerimientoModel requerimiento = new RequerimientoModel();
         int id = Integer.parseInt(request.getParameter("hidId"));
         

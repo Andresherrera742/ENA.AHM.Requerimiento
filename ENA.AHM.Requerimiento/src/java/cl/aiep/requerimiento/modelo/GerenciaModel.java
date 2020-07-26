@@ -10,6 +10,20 @@ package cl.aiep.requerimiento.modelo;
  * @author aeherrera
  */
 public class GerenciaModel {
+
+    /**
+     * @return the departamento
+     */
+    public DepartamentoModel getDepartamento() {
+        return departamento;
+    }
+
+    /**
+     * @param departamento the departamento to set
+     */
+    public void setDepartamento(DepartamentoModel departamento) {
+        this.departamento = departamento;
+    }
     
     
     public GerenciaModel(){
@@ -52,5 +66,6 @@ public class GerenciaModel {
     
     private int gerenciaId;
     private String descripcionGerencia;
+    private DepartamentoModel departamento;
     
 }

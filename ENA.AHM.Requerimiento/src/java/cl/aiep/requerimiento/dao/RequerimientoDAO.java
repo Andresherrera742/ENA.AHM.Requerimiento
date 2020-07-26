@@ -5,7 +5,6 @@
  */
 package cl.aiep.requerimiento.dao;
 
-
 import cl.aiep.requerimiento.modelo.AreaResolutoraModel;
 import cl.aiep.requerimiento.modelo.DepartamentoModel;
 import cl.aiep.requerimiento.modelo.GerenciaModel;
@@ -23,8 +22,8 @@ import java.util.List;
  * @author aeherrera
  */
 public class RequerimientoDAO extends DAOBase {
-    
-        public boolean insert(RequerimientoModel model) {
+
+    public boolean insert(RequerimientoModel model) {
         PreparedStatement pst = null;
         Connection conn = null;
         boolean status = false;
@@ -38,7 +37,7 @@ public class RequerimientoDAO extends DAOBase {
             pst.setInt(4, model.getResolutor().getResolutorId());
             pst.setString(6, model.getRequerimiento());
             pst.setString(7, model.getEstado());
-     
+
             int afectados = pst.executeUpdate();
             status = (afectados > 0);
 
@@ -50,7 +49,8 @@ public class RequerimientoDAO extends DAOBase {
 
         return status;
     }
-        private StringBuilder getQueryInsert() {
+
+    private StringBuilder getQueryInsert() {
 
         StringBuilder query = new StringBuilder();
 
@@ -63,7 +63,6 @@ public class RequerimientoDAO extends DAOBase {
         query.append("  ,fechaIngreso");
         query.append("  ,requerimiento");
         query.append("  ,estado");
-        query.append("  ,fechaCierre");
         query.append(" ) ");
         query.append(" VALUES ");
         query.append(" ( ");
@@ -74,12 +73,12 @@ public class RequerimientoDAO extends DAOBase {
         query.append("  ,sysdate()");
         query.append("  ,?");
         query.append("  ,Abierto");
-        query.append("  , ");
         query.append(" ) ");
 
         return query;
     }
-    public boolean update(RequerimientoModel model) {
+
+    public boolean update(int id) {
         PreparedStatement pst = null;
         Connection conn = null;
         boolean status = false;
@@ -87,14 +86,8 @@ public class RequerimientoDAO extends DAOBase {
         try {
             conn = getConnection();
             pst = conn.prepareStatement(getQueryUpdate().toString());
-            pst.setInt(1, model.getGerencia().getGerenciaId());
-            pst.setInt(2, model.getDepartamento().getDepartamentoId());
-            pst.setInt(3, model.getAreaResolutora().getAreaResolutoraId());
-            pst.setInt(4, model.getResolutor().getResolutorId());
-            pst.setString(6, model.getRequerimiento());
-            pst.setString(7, model.getEstado());
-            pst.setInt(8, model.getRequerimientoId());
-
+            pst.setInt(1, id);
+          
             int afectados = pst.executeUpdate();
             status = (afectados > 0);
 
@@ -113,12 +106,7 @@ public class RequerimientoDAO extends DAOBase {
 
         query.append(" UPDATE requerimiento ");
         query.append(" SET ");
-        query.append("   gerenciaId = ?");
-        query.append("  ,departamentoId = ? ");
-        query.append("  ,areaResolutoraId = ? ");
-        query.append("  ,resolutorId = ?");
-        query.append("  ,requerimiento = ?");
-        query.append("  ,estado = Cerrado");
+        query.append("  ,estado = 'Cerrado'");
         query.append("  ,fechaCierre = sysdate()");
         query.append(" WHERE ");
         query.append("    requerimientoId = ? ");
@@ -126,21 +114,54 @@ public class RequerimientoDAO extends DAOBase {
         return query;
     }
 
-    public List<RequerimientoModel> getRequerimientos() {
+    public List<RequerimientoModel> getRequerimientos(int gerenciaId, int departamentoId, int areaResolutoraId) {
 
         List<RequerimientoModel> requerimientos = new ArrayList<RequerimientoModel>();
         Connection conn = null;
         PreparedStatement pst = null;
         ResultSet rs = null;
+       
 
         try {
+            
             conn = getConnection();
             StringBuilder query = getQuerySelect();
+
+            if (gerenciaId > 0) {
+                query.append("AND re.gerenciaId = ?");
+            }
+
+            if (departamentoId > 0) {
+                query.append("AND re.departamentoId = ?");
+            }
+
+            if (areaResolutoraId > 0) {
+                query.append("AND re.areaResolutoraId = ?");
+            }
+
+            
             pst = conn.prepareStatement(query.toString());
+            int n = 0;
+           
+            if (gerenciaId > 0) {
+                n ++;
+                pst.setInt(n, gerenciaId);
+            }
+
+            if (departamentoId > 0) {
+                n ++;
+                pst.setInt(n, departamentoId);
+            }
+
+            if (areaResolutoraId > 0) {
+                n ++;
+                pst.setInt(n, areaResolutoraId);
+            }
+
             rs = pst.executeQuery();
 
             while (rs.next()) {
-                RequerimientoModel model = toModel( rs );
+                RequerimientoModel model = toModel(rs);
                 requerimientos.add(model);
             }
         } catch (SQLException e) {
@@ -164,11 +185,11 @@ public class RequerimientoDAO extends DAOBase {
             query.append(" WHERE requerimientoId = ? ");
             pst = conn.prepareStatement(query.toString());
             pst.setInt(1, id);
-            
+
             rs = pst.executeQuery();
 
             while (rs.next()) {
-                requerimiento = toModel( rs );
+                requerimiento = toModel(rs);
             }
         } catch (SQLException e) {
             writeErrorConsole(e);
@@ -181,39 +202,38 @@ public class RequerimientoDAO extends DAOBase {
     private RequerimientoModel toModel(ResultSet rs) {
         RequerimientoModel requerimiento = new RequerimientoModel();
         GerenciaModel gerencia = new GerenciaModel();
-        DepartamentoModel departamento = new DepartamentoModel(); 
+        DepartamentoModel departamento = new DepartamentoModel();
         AreaResolutoraModel areaResolutora = new AreaResolutoraModel();
         ResolutorModel resolutor = new ResolutorModel();
-        
-        try{
-            
+
+        try {
+
             requerimiento.setRequerimientoId(rs.getInt("requerimientoId"));
-            
+
             gerencia.setGerenciaId(rs.getInt("gerenciaId"));
             gerencia.setDescripcionGerencia(rs.getString("g.descripcionGerencia"));
             requerimiento.setGerencia(gerencia);
-           
+
             departamento.setDepartamentoId(rs.getInt("departamentoId"));
             departamento.setDescripcionDepartamento(rs.getString("d.descripcionDepartamento"));
             requerimiento.setDepartamento(departamento);
-            
+
             areaResolutora.setAreaResolutoraId(rs.getInt("areaResolutoraId"));
             areaResolutora.setDescripcionArea(rs.getString("ar.descripcionArea"));
             requerimiento.setAreaResolutora(areaResolutora);
-            
+
             resolutor.setResolutorId(rs.getInt("resolutorId"));
             resolutor.setNombreResolutor(rs.getString("r.nombreResolutor"));
             requerimiento.setResolutor(resolutor);
-            
+
             requerimiento.setRequerimiento(rs.getString("requerimiento"));
             requerimiento.setEstado(rs.getString("estado"));
-                        
+
+        } catch (SQLException ex) {
+            writeErrorConsole(ex);
         }
-        catch( SQLException ex ){
-            writeErrorConsole( ex );
-        }
-        
-        return requerimiento ;
+
+        return requerimiento;
     }
 
     private StringBuilder getQuerySelect() {
@@ -233,11 +253,13 @@ public class RequerimientoDAO extends DAOBase {
         query.append(" ,re.requerimiento ");
         query.append(" ,re.estado ");
         query.append(" ,re.fechaCierre ");
-        query.append(" FROM requerimiento re ");        
+        query.append(" FROM requerimiento re ");
         query.append("  INNER JOIN gerencia g ON g.gerenciaId = re.gerenciaId");
         query.append("  INNER JOIN departamento	d  ON d.departamentoId = re.departamentoId");
         query.append("  INNER JOIN areaResolutora ar  ON ar.areaResolutoraId = re.areaResolutoraId");
         query.append("  INNER JOIN resolutor r  ON r.resolutorId = re.resolutorId");
+
+        query.append(" WHERE 1 = 1 ");
 
         return query;
     }
@@ -273,6 +295,6 @@ public class RequerimientoDAO extends DAOBase {
         query.append(" FROM requerimiento ");
 
         return query;
-    }    
-        
+    }
+
 }

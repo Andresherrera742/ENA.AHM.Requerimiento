@@ -5,6 +5,7 @@
  */
 package cl.aiep.requerimiento.modelo;
 
+
 import java.util.Date;
 
 /**
@@ -230,6 +231,8 @@ public class RequerimientoModel {
     private DepartamentoModel departamento;
     private AreaResolutoraModel areaResolutora;
     private ResolutorModel resolutor;
+
+
     
     
     

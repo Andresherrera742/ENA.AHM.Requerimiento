@@ -10,6 +10,20 @@ package cl.aiep.requerimiento.modelo;
  * @author aeherrera
  */
 public class AreaResolutoraModel {
+
+    /**
+     * @return the resolutor
+     */
+    public ResolutorModel getResolutor() {
+        return resolutor;
+    }
+
+    /**
+     * @param resolutor the resolutor to set
+     */
+    public void setResolutor(ResolutorModel resolutor) {
+        this.resolutor = resolutor;
+    }
     
         public AreaResolutoraModel(){
     
@@ -51,5 +65,6 @@ public class AreaResolutoraModel {
     
     private int areaResolutoraId;
     private String descripcionArea;
+    private ResolutorModel resolutor;
     
 }

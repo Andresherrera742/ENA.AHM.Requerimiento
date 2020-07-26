@@ -21,7 +21,7 @@ public class GerenciaDAO extends DAOBase {
     
         public List<GerenciaModel> getGerencia() {
 
-        List<GerenciaModel> gerencia = new ArrayList<GerenciaModel>();
+        List<GerenciaModel> gerencias = new ArrayList<GerenciaModel>();
         Connection conn = null;
         PreparedStatement pst = null;
         ResultSet rs = null;
@@ -34,14 +34,14 @@ public class GerenciaDAO extends DAOBase {
 
             while (rs.next()) {
                 GerenciaModel model = toModel( rs );
-                gerencia.add(model);
+                gerencias.add(model);
             }
         } catch (SQLException e) {
             writeErrorConsole(e);
         } finally {
             closeConnection(conn, pst, rs);
         }
-        return gerencia;
+        return gerencias;
     }
      
      public GerenciaModel getGerencia( int id) {

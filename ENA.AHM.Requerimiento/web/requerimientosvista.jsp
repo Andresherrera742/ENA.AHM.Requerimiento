@@ -22,34 +22,110 @@
                 <div class="card-header bg-dark text-white">
                     <h4>Listado de Requerimientos</h4>
                 </div>	
+                <div class="card-body">	
 
-                <div class="card-body">						                            	
-                    <table class="table  table-stripper hover">
-                        <thead>
-                            <tr>
-                                <th>Id</th>
-                                <th>Gerencia</th>
-                                <th>Departamento</th>
-                                <th>Area Resolutora</th>
-                                <th>Resolutor</th>
-                                <th>Fecha Creacion</th>                                
-                                <th>Requerimiento</th>
-                                <th>Estado</th>
-                                <th>Fecha Cierre</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            
+                    <div class="form-group">
+                        Gerencia 
+                        <select name="cboGerenciaConsulta" class="form-control" required onchange="submit()" >
 
-                        </tbody>
+                            <option value="0">Todos</option>
+                            <c:forEach  var="g"  items="${gerencias}" >
 
-                    </table>  
-                    <a class="btn btn-primary" href="requerimientoController.do?action=nuevo">Nuevo</a>
-                </div>
-                <div>
-                    
-                </div>
+                                <option value="${gerenciaId}"  
+                                        ${g.gerenciaId == requerimiento.getGerencia().getGerenciaId() ? ' selected ' : ' '}>
+
+
+                                    ${g.descripcionGerencia}
+                                </option>
+
+                            </c:forEach>
+
+                        </select>			
+                    </div>
+                    <div class="form-group">
+                        Departamento
+
+                        <select name="cboDepartamentoConsulta" class="form-control" required  >
+
+                            <option value="0">Todos</option>
+                            <c:forEach  var="d"  items="${departamentos}" >
+
+                                <option value="${departamentoId}"
+                                        ${d.departamentoId == requerimiento.getDepartamento().getDepartamentoId() ? ' selected ' : ' '  } >
+                                    ${d.descripcionDepartamento}
+                                </option>
+
+                            </c:forEach>
+
+                        </select>
+                    </div>                           
+
+                    <div class="form-group">
+                        Area Resolutora
+
+                        <select name="cboAreaResolutoraConsulta" class="form-control" required >
+
+                            <option value="0">Todos</option>
+                            <c:forEach  var="ar"  items="${areaResolutoras}" >
+
+                                <option value="${areaResolutoraId}"
+                                        ${ar.areaResolutoraId == requerimiento.getAreaResolutora().getAreaResolutoraId() ? ' selected ' : ' '  } >
+                                    ${ar.descripcionArea}
+                                </option>
+
+                            </c:forEach>
+                            <td>
+
+                                <a href="requerimientoController.do?action=listar&id=${requerimiento.requerientoId}"
+                                   class="btn btn-warning" >Buscar</a>                                                                           
+
+                            </td>   
+
+                        </select>
+                    </div>  
+
+
+                    <div class="card-body">						                            	
+                        <table class="table  table-stripper hover">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Gerencia</th>
+                                    <th>Departamento</th>
+                                    <th>Area Resolutora</th>
+                                    <th>Resolutor</th>
+                                    <th>Fecha Creacion</th>                                
+                                    <th>Requerimiento</th>
+                                    <th>Estado</th>
+                                    <th>Fecha Cierre</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <c:forEach var="requerimiento" items="${requerimientos}">                                
+                                    <tr>    
+
+                                        <td>${requerimiento.requerimientoId}</td>
+                                        <td>${requerimiento.gerencia.descripcionGerencia}</td>    
+                                        <td>${requerimiento.departamento.descripcionDepartamento}</td>    
+                                        <td>${requerimiento.areaResolutora.descripcionArea}</td>    
+                                        <td>${requerimiento.resolutor.nombreResolutor}</td>                                 
+                                        <td>${requerimiento.fechaIngreso}</td>
+                                        <td>${requerimiento.requerimiento}</td>
+                                        <td>${requerimiento.estado}</td>
+                                        <td>${requerimiento.fechaCierre}</td>
+
+
+
+                                    </tr>                            
+                                </c:forEach>                            
+
+                            </tbody>
+
+                        </table>  
+
+                    </div>
+                </div>     
 
             </div>          
         </div>
