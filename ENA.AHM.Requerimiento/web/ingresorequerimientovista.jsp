@@ -29,7 +29,8 @@
                             
                         </div>					
                         <div class="card-body">	
-                            <input type="hidden" name="hidId" value="${requerimiento.requerimientoId}" >
+                             <input type="hidden" name="hidId" value="${requerimiento.requerimientoId}" >
+                           
                             <div class="form-group">
                                 Gerencia 
                                 <select name="cboGerencia" class="form-control" required onchange="submit()" >
@@ -37,7 +38,7 @@
                                     <option value=""></option>
                                     <c:forEach  var="g"  items="${gerencias}" >
                                         
-                                        <option value="${gerenciaId}"  
+                                        <option value="${g.gerenciaId}"  
                                             ${g.gerenciaId == requerimiento.getGerencia().getGerenciaId() ? ' selected ' : ' '}>
                                             ${g.descripcionGerencia}
                                         </option>
@@ -54,7 +55,7 @@
                                     <option value=""></option>
                                     <c:forEach  var="d"  items="${departamentos}" >
                                         
-                                        <option value="${departamentoId}"
+                                        <option value="${d.departamentoId}"
                                             ${d.departamentoId == requerimiento.getDepartamento().getDepartamentoId() ? ' selected ' : ' '  } >
                                             ${d.descripcionDepartamento}
                                         </option>
@@ -72,7 +73,7 @@
                                     <option value=""></option>
                                     <c:forEach  var="ar"  items="${areaResolutoras}" >
                                         
-                                        <option value="${areaResolutoraId}"
+                                        <option value="${ar.areaResolutoraId}"
                                             ${ar.areaResolutoraId == requerimiento.getAreaResolutora().getAreaResolutoraId() ? ' selected ' : ' '  } >
                                             ${ar.descripcionArea}
                                         </option>
@@ -90,7 +91,7 @@
                                     <option value=""></option>
                                     <c:forEach  var="r"  items="${resolutores}" >
                                         
-                                        <option value="${resolutorId}"
+                                        <option value="${r.resolutorId}"
                                             ${r.resolutorId == requerimiento.getResolutor().getResolutorId() ? ' selected ' : ' '  } >
                                             ${r.nombreResolutor}
                                         </option>

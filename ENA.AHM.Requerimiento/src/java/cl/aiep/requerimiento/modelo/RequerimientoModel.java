@@ -20,7 +20,8 @@ public class RequerimientoModel {
     
     }
     
-     public RequerimientoModel(int requerimientoId, int gerenciaId, int departamentoId, int areaResolutoraId, int resolutorId, Date fechaIngreso, String requerimiento, String estado, Date fechaCierre){
+   
+     public RequerimientoModel(int requerimientoId, GerenciaModel gerencia, DepartamentoModel departamento, AreaResolutoraModel areaResolutora, ResolutorModel resolutor, Date fechaIngreso, String requerimiento, String estado, Date fechaCierre){
          
          this.requerimientoId = requerimientoId;
          this.gerenciaId = gerenciaId;

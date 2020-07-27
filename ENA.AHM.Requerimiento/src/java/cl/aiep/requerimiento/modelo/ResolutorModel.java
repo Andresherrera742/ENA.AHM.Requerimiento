@@ -11,17 +11,6 @@ package cl.aiep.requerimiento.modelo;
  */
 public class ResolutorModel {
     
-    public ResolutorModel(){
-    
-    }
-    
-     public ResolutorModel(int resolutorId, String nombreResolutor, int areaResolutorId){
-         
-         this.resolutorId = resolutorId;
-         this.nombreResolutor = nombreResolutor;
-         this.areaResolutorId = areaResolutorId;
-    }
-
     /**
      * @return the resolutorId
      */

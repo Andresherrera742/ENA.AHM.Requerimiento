@@ -19,9 +19,9 @@ import java.util.List;
  */
 public class ResolutorDAO extends DAOBase {
 
-        public List<ResolutorModel> getResolutores(int areaResolutoraId) {
+        public List<ResolutorModel> getResolutores(int areaResolutorId) {
 
-        List<ResolutorModel> resolutor = new ArrayList<ResolutorModel>();
+        List<ResolutorModel> resolutores = new ArrayList<ResolutorModel>();
         Connection conn = null;
         PreparedStatement pst = null;
         ResultSet rs = null;
@@ -29,23 +29,24 @@ public class ResolutorDAO extends DAOBase {
         try {
             conn = getConnection();
             StringBuilder query = getQuerySelect();
+            query.append( " WHERE areaResolutorId = ? ");
             pst = conn.prepareStatement(query.toString());
-            pst.setInt( 1, areaResolutoraId );
+            pst.setInt( 1, areaResolutorId );
             rs = pst.executeQuery();
 
             while (rs.next()) {
                 ResolutorModel model = toModel( rs );
-                resolutor.add(model);
+                resolutores.add(model);
             }
         } catch (SQLException e) {
             writeErrorConsole(e);
         } finally {
             closeConnection(conn, pst, rs);
         }
-        return resolutor;
+        return resolutores;
     }
      
-     public ResolutorModel getDepartamento( int id) {
+     public ResolutorModel getResolutor( int id) {
 
         ResolutorModel resolutor =  new ResolutorModel();
         Connection conn = null;
@@ -77,7 +78,7 @@ public class ResolutorDAO extends DAOBase {
         query.append(" SELECT ");
         query.append("  resolutorId ");
         query.append(" ,nombreResolutor");  
-        query.append(" ,areaResolutoraId");  
+        query.append(" ,areaResolutorId");  
         query.append(" FROM resolutor ");
 
         return query;
@@ -89,7 +90,7 @@ public class ResolutorDAO extends DAOBase {
         try{
             model.setResolutorId(rs.getInt("resolutorId"));
             model.setNombreResolutor(rs.getString("nombreResolutor"));  
-            model.setAreaResolutorId(rs.getInt("areaResolutoraId"));
+            model.setAreaResolutorId(rs.getInt("areaResolutorId"));
         }
         catch( SQLException ex ){
             writeErrorConsole( ex );

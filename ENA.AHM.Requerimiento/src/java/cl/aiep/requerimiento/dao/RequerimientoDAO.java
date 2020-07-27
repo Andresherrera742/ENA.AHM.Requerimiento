@@ -35,8 +35,8 @@ public class RequerimientoDAO extends DAOBase {
             pst.setInt(2, model.getDepartamento().getDepartamentoId());
             pst.setInt(3, model.getAreaResolutora().getAreaResolutoraId());
             pst.setInt(4, model.getResolutor().getResolutorId());
-            pst.setString(6, model.getRequerimiento());
-            pst.setString(7, model.getEstado());
+            pst.setString(5, model.getRequerimiento());
+            
 
             int afectados = pst.executeUpdate();
             status = (afectados > 0);
