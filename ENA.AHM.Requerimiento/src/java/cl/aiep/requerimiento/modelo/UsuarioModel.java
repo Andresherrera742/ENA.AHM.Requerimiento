@@ -11,17 +11,6 @@ package cl.aiep.requerimiento.modelo;
  */
 public class UsuarioModel {
     
-    public UsuarioModel(){
-    
-    }
-    
-     public UsuarioModel(int usuarioId, String usuario, String contraseña){
-         
-         this.usuarioId = usuarioId;
-         this.usuario = usuario;
-         this.contraseña = contraseña;
-    }
-
     /**
      * @return the usuarioId
      */

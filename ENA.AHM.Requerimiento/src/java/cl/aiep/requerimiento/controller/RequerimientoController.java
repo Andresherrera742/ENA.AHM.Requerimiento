@@ -10,15 +10,18 @@ import cl.aiep.requerimiento.dao.DepartamentoDAO;
 import cl.aiep.requerimiento.dao.GerenciaDAO;
 import cl.aiep.requerimiento.dao.RequerimientoDAO;
 import cl.aiep.requerimiento.dao.ResolutorDAO;
+import cl.aiep.requerimiento.dao.UsuarioDAO;
 import cl.aiep.requerimiento.modelo.AreaResolutoraModel;
 import cl.aiep.requerimiento.modelo.DepartamentoModel;
 import cl.aiep.requerimiento.modelo.GerenciaModel;
 import cl.aiep.requerimiento.modelo.RequerimientoModel;
 import cl.aiep.requerimiento.modelo.ResolutorModel;
+import cl.aiep.requerimiento.modelo.UsuarioModel;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -70,7 +73,7 @@ public class RequerimientoController extends HttpServlet {
                 break;
 
             case "listar":
-               // verificaAccesoPermitido(request, response);
+                verificaAccesoPermitido(request, response);
                 listarRequerimiento(request, response);
                 break;
 
@@ -83,10 +86,12 @@ public class RequerimientoController extends HttpServlet {
                 break;
 
             case "Acceder":
-                //accederSistema(request, response);
+                accederSistema(request, response);
                 break;
 
             default:
+                verificaAccesoPermitido(request, response);
+                
                 if ( cboGerencia != null &&  !"".equals( cboGerencia )) {
                     cambiarRequerimiento(request, response);
                 }
@@ -344,5 +349,79 @@ public class RequerimientoController extends HttpServlet {
         return id;
     }
     
+      private void accederSistema(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String usuario = request.getParameter("txtNick");
+        String pass = request.getParameter("txtPassword");
+
+        boolean permitido = false;
+        boolean recordar = false;
+
+        String mensaje = "";
+        String estiloMensaje = "";
+
+        UsuarioModel model = new UsuarioModel();
+
+        if (usuario != null && pass != null) {
+
+            model = new UsuarioDAO().getUsuario(usuario);
+
+            if (model.getUsuarioId() > 0) {
+                permitido = model.getContraseña().equals(pass);
+            }
+        }
+
+        if (permitido) {
+            String chkRecordar = request.getParameter("chkRecordar");
+
+            recordar = chkRecordar != null;
+
+            Cookie cookie = new Cookie("EmpleadoUser", usuario);
+            if (recordar) {
+                cookie.setMaxAge(600);
+            } else {
+                cookie.setMaxAge(-1);
+            }
+
+            response.addCookie(cookie);
+            response.sendRedirect("requerimientoController.do?action=index");
+
+            //request.getRequestDispatcher("index.jsp").forward(request, response);
+        } else {
+            mensaje = "Credenciales no validas";
+            estiloMensaje = "alert alert-danger text-center";
+            model.setUsuario(usuario);
+            request.setAttribute("usuario", model);
+            request.setAttribute("mensaje", mensaje);
+            request.setAttribute("estiloMensaje", estiloMensaje);
+            request.getRequestDispatcher("loginvista.jsp").forward(request, response);
+        }
+    }
+
+    private void verificaAccesoPermitido(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String userCookie = getCookieValue(  request.getCookies(), "EmpleadoUser" ) ;
+        if( "".equals(userCookie) ){
+            request.getRequestDispatcher("loginvista.jsp").forward( request, response);
+        }
+    }
+
+    private String getCookieValue(Cookie[] cookies, String cookieName) {
+        String cookieValue = "";
+        Cookie cookie;
+        if (cookies != null) {
+            for (int i = 0; i < cookies.length; i++) {
+                cookie = cookies[i];
+                if (cookieName.equals(cookie.getName())) {
+                    cookieValue = cookie.getValue();
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
     
 }
