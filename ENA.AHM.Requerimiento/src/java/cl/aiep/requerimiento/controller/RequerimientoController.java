@@ -43,21 +43,20 @@ public class RequerimientoController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       
+
         String accion = request.getParameter("action");
         String cboGerencia = request.getParameter("cboGerencia");
-        String cboGerenciaConsulta = request.getParameter("cboGerenciaConsulta");
         String cboDepartamento = request.getParameter("cboDepartamento");
-        String cboDepartamentoConsulta = request.getParameter("cboDepartamentoConsulta");
         String cboAreaResolutora = request.getParameter("cboAreaResolutora");
-        String cboAreaResolutoraConsulta = request.getParameter("cboAreaResolutoraConsulta");
         String cboResolutor = request.getParameter("cboResolutor");
-        
-       
-        if( accion == null ){
+        String cboGerenciaConsulta = request.getParameter("cboGerenciaConsulta");
+        String cboDepartamentoConsulta = request.getParameter("cboDepartamentoConsulta");
+        String cboAreaResolutoraConsulta = request.getParameter("cboAreaResolutoraConsulta");
+
+        if (accion == null) {
             accion = "";
         }
-        
+
         switch (accion) {
 
             case "index":
@@ -91,23 +90,22 @@ public class RequerimientoController extends HttpServlet {
 
             default:
                 verificaAccesoPermitido(request, response);
-                
-                if ( cboGerencia != null &&  !"".equals( cboGerencia )) {
+
+                if (cboGerencia != null  && !("".equals(cboGerencia))) {
                     cambiarRequerimiento(request, response);
                 }
-                if ( cboGerenciaConsulta != null &&  !"".equals( cboGerenciaConsulta )) {
-                    cambiarRequerimiento(request, response);
+                if (cboGerenciaConsulta != null && !("".equals(cboGerenciaConsulta))) {
+                    cambiarRequerimientoConsulta(request, response);
                 }
-                
-                if ( cboAreaResolutora != null &&  !"".equals( cboAreaResolutora )) {
-                    cambiarRequerimiento(request, response);
-                }
-                
-                if ( cboAreaResolutoraConsulta != null &&  !"".equals( cboAreaResolutoraConsulta )) {
+
+                if (cboAreaResolutora != null && !("".equals(cboAreaResolutora))) {
                     cambiarRequerimiento(request, response);
                 }
 
-        
+                if (!("".equals(cboAreaResolutoraConsulta))) {
+                    cambiarRequerimientoConsulta(request, response);
+                }
+
         }
     }
 
@@ -152,52 +150,44 @@ public class RequerimientoController extends HttpServlet {
 
     private void nuevoRequerimiento(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        RequerimientoModel requerimiento = new RequerimientoModel();       
-        cargaCboBase( request, response);
+
+        RequerimientoModel requerimiento = new RequerimientoModel();
+        cargaCboBase(request, response);
         request.setAttribute("requerimiento", requerimiento);
-       
 
         request.getRequestDispatcher("ingresorequerimientovista.jsp").forward(request, response);
     }
-    
-     private void cargaCboBase(HttpServletRequest request, HttpServletResponse response)
+
+    private void cargaCboBase(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       
+
         List<GerenciaModel> gerencias = new GerenciaDAO().getGerencia();
         List<AreaResolutoraModel> areasResolutoras = new AreaResolutoraDAO().getAreaResolutora();
         request.setAttribute("gerencias", gerencias);
         request.setAttribute("areaResolutoras", areasResolutoras);
-     }
-    
-    
-      private void cerrarRequerimiento(HttpServletRequest request, HttpServletResponse response)
+    }
+
+    private void cerrarRequerimiento(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
         int id = Integer.parseInt(request.getParameter("id"));
-        RequerimientoModel requerimiento = new RequerimientoDAO().getRequerimiento(id);//.update(id)
-        List<GerenciaModel> gerencia = new GerenciaDAO().getGerencia();
-        int idGerencia = requerimiento.getGerencia().getGerenciaId();
-        List<DepartamentoModel> departamentos = new DepartamentoDAO().getDepartamentos(idGerencia);
-
-        List<AreaResolutoraModel> areaResolutora = new AreaResolutoraDAO().getAreaResolutora();
-        int idAreaResolutora = requerimiento.getAreaResolutora().getAreaResolutoraId();
-        List<ResolutorModel> resolutores = new ResolutorDAO().getResolutores(idAreaResolutora);
+ 
+        String mensaje = "";
+        String estiloMensaje = "";
         
-        request.setAttribute("requerimiento", requerimiento);
-        request.setAttribute("gerencia", gerencia);
-        request.setAttribute("gerencia", requerimiento.getGerencia().getGerenciaId());
+        boolean exito = new RequerimientoDAO().update(id);
 
-        request.setAttribute("departamentos", departamentos);
-        request.setAttribute("departamento", requerimiento.getDepartamento().getDepartamentoId());
-        
-        request.setAttribute("areaResolutora", areaResolutora);
-        request.setAttribute("areaResolutora", requerimiento.getAreaResolutora().getAreaResolutoraId());
+        if (exito) {
+            mensaje = "Requerimiento cerrado con exito";
+            estiloMensaje = "alert alert-success text-center";
+        } else {
+            mensaje = "Requerimiento no pudo ser Cerrado";
+            estiloMensaje = "alert alert-danger text-center";
+        }
 
-        request.setAttribute("resolutores", resolutores);
-        request.setAttribute("resolutores", requerimiento.getResolutor().getResolutorId());
-
-        request.getRequestDispatcher("ingresorequerimientovista.jsp").forward(request, response);
+        request.setAttribute("mensaje", mensaje);
+        request.setAttribute("estiloMensaje", estiloMensaje);
+        request.getRequestDispatcher("cerrarrequerimientovista.jsp").forward(request, response);
 
     }
 
@@ -223,7 +213,7 @@ public class RequerimientoController extends HttpServlet {
 
         RequerimientoModel model = new RequerimientoModel();
         model.setRequerimientoId(id);
-        
+
         int idGerencia = Integer.parseInt(request.getParameter("cboGerencia"));
         GerenciaModel gerencia = new GerenciaModel();
         gerencia.setGerenciaId(idGerencia);
@@ -233,7 +223,7 @@ public class RequerimientoController extends HttpServlet {
         DepartamentoModel departamento = new DepartamentoModel();
         departamento.setDepartamentoId(idDepartamento);
         model.setDepartamento(departamento);
-        
+
         int idAreaResolutora = Integer.parseInt(request.getParameter("cboAreaResolutora"));
         AreaResolutoraModel areaResolutora = new AreaResolutoraModel();
         areaResolutora.setAreaResolutoraId(idAreaResolutora);
@@ -243,9 +233,8 @@ public class RequerimientoController extends HttpServlet {
         ResolutorModel resolutor = new ResolutorModel();
         resolutor.setResolutorId(idResolutor);
         model.setResolutor(resolutor);
-        
+
         model.setRequerimiento(request.getParameter("txtRequerimiento"));
-        
 
         if (model.getRequerimientoId() == 0) {
             RequerimientoDAO dao = new RequerimientoDAO();
@@ -284,72 +273,108 @@ public class RequerimientoController extends HttpServlet {
         int idGerencia = getIDDesdeCombo(request, response, "cboGerenciaConsulta");
         int idDepartamento = getIDDesdeCombo(request, response, "cboDepartamentoConsulta");
         int idAreaResolutora = getIDDesdeCombo(request, response, "cboAreaResolutoraConsulta");
-        
+
         List<RequerimientoModel> entidades = new RequerimientoDAO().getRequerimientos(idGerencia, idDepartamento, idAreaResolutora);
         request.setAttribute("requerimientos", entidades);
         request.getRequestDispatcher("requerimientosvista.jsp").forward(request, response);
 
     }
-   
+
     private void cambiarRequerimiento(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        int idGerencia = getIDDesdeCombo( request, response,"cboGerencia" );        
-        List<DepartamentoModel> departamentos = new DepartamentoDAO().getDepartamentos(idGerencia);
-        
-        int idAreaResolutora = getIDDesdeCombo( request, response,"cboAreaResolutora" );        
-        List<ResolutorModel> resolutores = new ResolutorDAO().getResolutores(idAreaResolutora);
+        int gerenciaId = getIDDesdeCombo(request, response, "cboGerencia");
+        List<DepartamentoModel> departamentos = new DepartamentoDAO().getDepartamentos(gerenciaId);
 
-       
+        int areaResolutoraId = getIDDesdeCombo(request, response, "cboAreaResolutora");
+        List<ResolutorModel> resolutores = new ResolutorDAO().getResolutores(areaResolutoraId);
+
         RequerimientoModel requerimiento = new RequerimientoModel();
         int id = Integer.parseInt(request.getParameter("hidId"));
-        
-        requerimiento.setRequerimientoId(id);                
-        
+
+        requerimiento.setRequerimientoId(id);
+
+        GerenciaModel gerencia = new GerenciaModel();
+        gerencia.setGerenciaId(gerenciaId);
+        requerimiento.setGerencia(gerencia);
+
+        int departamentoId = getIDDesdeCombo(request, response, "cboDepartamento");
+        DepartamentoModel departamento = new DepartamentoModel();
+        departamento.setDepartamentoId(departamentoId);
+        requerimiento.setDepartamento(departamento);
+
+        AreaResolutoraModel areaResolutora = new AreaResolutoraModel();
+        areaResolutora.setAreaResolutoraId(areaResolutoraId);
+        requerimiento.setAreaResolutora(areaResolutora);
+
+        int areaResolutorId = getIDDesdeCombo(request, response, "cboResolutor");
+        ResolutorModel resolutor = new ResolutorModel();
+        resolutor.setResolutorId(areaResolutorId);
+        requerimiento.setResolutor(resolutor);
+
+        requerimiento.setRequerimiento(request.getParameter("txtRequerimiento"));
+
+        request.setAttribute("requerimiento", requerimiento);
+        request.setAttribute("departamentos", departamentos);
+        request.setAttribute("resolutores", resolutores);
+
+        cargaCboBase(request, response);
+
+        request.getRequestDispatcher("ingresorequerimientovista.jsp").forward(request, response);
+    }
+
+    private void cambiarRequerimientoConsulta(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        int idGerencia = getIDDesdeCombo(request, response, "cboGerenciaConsulta");
+        List<DepartamentoModel> departamentos = new DepartamentoDAO().getDepartamentos(idGerencia);
+
+        int idAreaResolutora = getIDDesdeCombo(request, response, "cboAreaResolutoraConsulta");
+        List<ResolutorModel> resolutores = new ResolutorDAO().getResolutores(idAreaResolutora);
+
+        RequerimientoModel requerimiento = new RequerimientoModel();
+        int id = Integer.parseInt(request.getParameter("hidId"));
+
+        requerimiento.setRequerimientoId(id);
+
         GerenciaModel gerencia = new GerenciaModel();
         gerencia.setGerenciaId(idGerencia);
         requerimiento.setGerencia(gerencia);
 
-        
-        int idDepartamento = getIDDesdeCombo( request, response,"cboDepartamento" );
+        int idDepartamento = getIDDesdeCombo(request, response, "cboDepartamentoConsulta");
         DepartamentoModel departamento = new DepartamentoModel();
         departamento.setDepartamentoId(idDepartamento);
         requerimiento.setDepartamento(departamento);
-        
-        
-       
+
         AreaResolutoraModel areaResolutora = new AreaResolutoraModel();
         areaResolutora.setAreaResolutoraId(idAreaResolutora);
         requerimiento.setAreaResolutora(areaResolutora);
-        
-        int idResolutor = getIDDesdeCombo( request, response,"cboResolutor" );        
-        ResolutorModel resolutor = new ResolutorModel();
-        resolutor.setResolutorId(idResolutor);
-        requerimiento.setResolutor(resolutor);
-        
+
+
+
         requerimiento.setRequerimiento(request.getParameter("txtRequerimiento"));
 
-        request.setAttribute("requerimiento", requerimiento);                
+        request.setAttribute("requerimiento", requerimiento);
         request.setAttribute("departamentos", departamentos);
-        request.setAttribute("resolutores", resolutores);        
-        
-        cargaCboBase( request, response);
+ 
+
+        cargaCboBase(request, response);
 
         request.getRequestDispatcher("ingresorequerimientovista.jsp").forward(request, response);
     }
-    
-    
-     private int getIDDesdeCombo(HttpServletRequest request, HttpServletResponse response, String nameCombo)
+
+    private int getIDDesdeCombo(HttpServletRequest request, HttpServletResponse response, String nameCombo)
             throws ServletException, IOException {
+        
         String valor = request.getParameter(nameCombo);
         int id = 0;
-        if (valor != null && !"".equals(valor)) {
+        if (valor != null && !("".equals(valor))) {
             id = Integer.parseInt(valor);
         }
         return id;
     }
-    
-      private void accederSistema(HttpServletRequest request, HttpServletResponse response)
+
+    private void accederSistema(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         String usuario = request.getParameter("txtNick");
@@ -402,9 +427,9 @@ public class RequerimientoController extends HttpServlet {
     private void verificaAccesoPermitido(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String userCookie = getCookieValue(  request.getCookies(), "EmpleadoUser" ) ;
-        if( "".equals(userCookie) ){
-            request.getRequestDispatcher("loginvista.jsp").forward( request, response);
+        String userCookie = getCookieValue(request.getCookies(), "EmpleadoUser");
+        if ("".equals(userCookie)) {
+            request.getRequestDispatcher("loginvista.jsp").forward(request, response);
         }
     }
 
@@ -423,5 +448,4 @@ public class RequerimientoController extends HttpServlet {
         return cookieValue;
     }
 
-    
 }

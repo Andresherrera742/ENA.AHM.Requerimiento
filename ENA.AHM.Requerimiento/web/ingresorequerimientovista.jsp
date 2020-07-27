@@ -39,8 +39,6 @@
                                         
                                         <option value="${gerenciaId}"  
                                             ${g.gerenciaId == requerimiento.getGerencia().getGerenciaId() ? ' selected ' : ' '}>
-                                        
-                                            
                                             ${g.descripcionGerencia}
                                         </option>
                                     
@@ -125,7 +123,7 @@
                                     <input type="submit" value="Grabar" name="action" class="btn btn-primary w-100"/>
                                 </div>
                                 <div class="col-6">                                
-                                    <a class="btn btn-warning w-100" href="empleadoController.do?action=listar" >Volver a Clientes</a> 
+                                    <a class="btn btn-warning w-100" href="requerimientoController.do?action=listar" >Volver a Clientes</a> 
                                 </div>                                
                             </div>
                             

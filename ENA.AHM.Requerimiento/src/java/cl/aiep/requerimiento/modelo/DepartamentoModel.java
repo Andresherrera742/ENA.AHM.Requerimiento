@@ -11,16 +11,7 @@ package cl.aiep.requerimiento.modelo;
  */
 public class DepartamentoModel {
     
-     public DepartamentoModel(){
-    
-    }
-    
-     public DepartamentoModel(int departamentoId, String descripcionDepartamento, int gerenciaId){
-         
-         this.departamentoId = departamentoId;
-         this.descripcionDepartamento = descripcionDepartamento;
-         this.gerenciaId = gerenciaId;
-    }
+
     
     /**
      * @return the departamentoId

@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class DepartamentoDAO extends DAOBase{
     
-        public List<DepartamentoModel> getDepartamentos(int idGerencia) {
+        public List<DepartamentoModel> getDepartamentos(int gerenciaId) {
 
         List<DepartamentoModel> departamentos = new ArrayList<DepartamentoModel>();
         Connection conn = null;
@@ -31,6 +31,7 @@ public class DepartamentoDAO extends DAOBase{
             StringBuilder query = getQuerySelect();
             query.append( " WHERE gerenciaId = ? ");                    
             pst = conn.prepareStatement(query.toString());
+            pst.setInt( 1, gerenciaId );
             rs = pst.executeQuery();
 
             while (rs.next()) {

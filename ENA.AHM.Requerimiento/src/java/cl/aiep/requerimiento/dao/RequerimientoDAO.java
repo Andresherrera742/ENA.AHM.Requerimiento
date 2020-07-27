@@ -98,6 +98,7 @@ public class RequerimientoDAO extends DAOBase {
         }
 
         return status;
+        
     }
 
     private StringBuilder getQueryUpdate() {

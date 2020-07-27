@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class ResolutorDAO extends DAOBase {
 
-        public List<ResolutorModel> getResolutores(int idAreaResolutora) {
+        public List<ResolutorModel> getResolutores(int areaResolutoraId) {
 
         List<ResolutorModel> resolutor = new ArrayList<ResolutorModel>();
         Connection conn = null;
@@ -30,6 +30,7 @@ public class ResolutorDAO extends DAOBase {
             conn = getConnection();
             StringBuilder query = getQuerySelect();
             pst = conn.prepareStatement(query.toString());
+            pst.setInt( 1, areaResolutoraId );
             rs = pst.executeQuery();
 
             while (rs.next()) {
