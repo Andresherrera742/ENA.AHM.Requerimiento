@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="RequerimientoModel">
+  <ClassDiagramComponents>
+    <Class name="RequerimientoModel" package="cl.aiep.requerimiento.modelo" visibility="public" xPosition="20.0" yPosition="20.0">
+      <Fields>
+        <Field name="requerimientoId" type="int" visibility="private"/>
+        <Field name="gerenciaId" type="int" visibility="private"/>
+        <Field name="departamentoId" type="int" visibility="private"/>
+        <Field name="areaResolutoraId" type="int" visibility="private"/>
+        <Field name="resolutorId" type="int" visibility="private"/>
+        <Field name="fechaIngreso" type="Date" visibility="private"/>
+        <Field name="requerimiento" type="String" visibility="private"/>
+        <Field name="estado" type="String" visibility="private"/>
+        <Field name="fechaCierre" type="Date" visibility="private"/>
+        <Field name="gerencia" type="GerenciaModel" visibility="private"/>
+        <Field name="departamento" type="DepartamentoModel" visibility="private"/>
+        <Field name="areaResolutora" type="AreaResolutoraModel" visibility="private"/>
+        <Field name="resolutor" type="ResolutorModel" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+        <Constructor visibility="public">
+          <Argument type="int" name="requerimientoId"/>
+          <Argument type="GerenciaModel" name="gerencia"/>
+          <Argument type="DepartamentoModel" name="departamento"/>
+          <Argument type="AreaResolutoraModel" name="areaResolutora"/>
+          <Argument type="ResolutorModel" name="resolutor"/>
+          <Argument type="Date" name="fechaIngreso"/>
+          <Argument type="String" name="requerimiento"/>
+          <Argument type="String" name="estado"/>
+          <Argument type="Date" name="fechaCierre"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getGerencia" returnType="GerenciaModel" visibility="public"/>
+        <Method name="setGerencia" returnType="void" visibility="public">
+          <Argument type="GerenciaModel" name="gerencia"/>
+        </Method>
+        <Method name="getDepartamento" returnType="DepartamentoModel" visibility="public"/>
+        <Method name="setDepartamento" returnType="void" visibility="public">
+          <Argument type="DepartamentoModel" name="departamento"/>
+        </Method>
+        <Method name="getAreaResolutora" returnType="AreaResolutoraModel" visibility="public"/>
+        <Method name="setAreaResolutora" returnType="void" visibility="public">
+          <Argument type="AreaResolutoraModel" name="areaResolutora"/>
+        </Method>
+        <Method name="getResolutor" returnType="ResolutorModel" visibility="public"/>
+        <Method name="setResolutor" returnType="void" visibility="public">
+          <Argument type="ResolutorModel" name="resolutor"/>
+        </Method>
+        <Method name="getRequerimientoId" returnType="int" visibility="public"/>
+        <Method name="setRequerimientoId" returnType="void" visibility="public">
+          <Argument type="int" name="requerimientoId"/>
+        </Method>
+        <Method name="getGerenciaId" returnType="int" visibility="public"/>
+        <Method name="setGerenciaId" returnType="void" visibility="public">
+          <Argument type="int" name="gerenciaId"/>
+        </Method>
+        <Method name="getDepartamentoId" returnType="int" visibility="public"/>
+        <Method name="setDepartamentoId" returnType="void" visibility="public">
+          <Argument type="int" name="departamentoId"/>
+        </Method>
+        <Method name="getAreaResolutoraId" returnType="int" visibility="public"/>
+        <Method name="setAreaResolutoraId" returnType="void" visibility="public">
+          <Argument type="int" name="areaResolutoraId"/>
+        </Method>
+        <Method name="getResolutorId" returnType="int" visibility="public"/>
+        <Method name="setResolutorId" returnType="void" visibility="public">
+          <Argument type="int" name="resolutorId"/>
+        </Method>
+        <Method name="getFechaIngreso" returnType="Date" visibility="public"/>
+        <Method name="setFechaIngreso" returnType="void" visibility="public">
+          <Argument type="Date" name="fechaIngreso"/>
+        </Method>
+        <Method name="getRequerimiento" returnType="String" visibility="public"/>
+        <Method name="setRequerimiento" returnType="void" visibility="public">
+          <Argument type="String" name="requerimiento"/>
+        </Method>
+        <Method name="getEstado" returnType="String" visibility="public"/>
+        <Method name="setEstado" returnType="void" visibility="public">
+          <Argument type="String" name="estado"/>
+        </Method>
+        <Method name="getFechaCierre" returnType="Date" visibility="public"/>
+        <Method name="setFechaCierre" returnType="void" visibility="public">
+          <Argument type="Date" name="fechaCierre"/>
+        </Method>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations/>
+</ClassDiagram>

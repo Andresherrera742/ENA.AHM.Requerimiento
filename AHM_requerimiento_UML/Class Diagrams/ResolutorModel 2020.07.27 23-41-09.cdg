@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="ResolutorModel">
+  <ClassDiagramComponents>
+    <Class name="ResolutorModel" package="cl.aiep.requerimiento.modelo" visibility="public" xPosition="20.0" yPosition="20.0">
+      <Fields>
+        <Field name="resolutorId" type="int" visibility="private"/>
+        <Field name="nombreResolutor" type="String" visibility="private"/>
+        <Field name="areaResolutorId" type="int" visibility="private"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="getResolutorId" returnType="int" visibility="public"/>
+        <Method name="setResolutorId" returnType="void" visibility="public">
+          <Argument type="int" name="resolutorId"/>
+        </Method>
+        <Method name="getNombreResolutor" returnType="String" visibility="public"/>
+        <Method name="setNombreResolutor" returnType="void" visibility="public">
+          <Argument type="String" name="nombreResolutor"/>
+        </Method>
+        <Method name="getAreaResolutorId" returnType="int" visibility="public"/>
+        <Method name="setAreaResolutorId" returnType="void" visibility="public">
+          <Argument type="int" name="areaResolutorId"/>
+        </Method>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations/>
+</ClassDiagram>

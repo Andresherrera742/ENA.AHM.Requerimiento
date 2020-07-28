@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="DAOBase">
+  <ClassDiagramComponents>
+    <Class name="DAOBase" package="cl.aiep.requerimiento.dao" visibility="public" xPosition="20.0" yPosition="20.0">
+      <Fields>
+        <Field name="conn" type="Connection" visibility="private"/>
+        <Field name="dbName" type="String" visibility="private" isFinal="true"/>
+        <Field name="driver" type="String" visibility="private" isFinal="true"/>
+        <Field name="user" type="String" visibility="private" isFinal="true"/>
+        <Field name="pass" type="String" visibility="private" isFinal="true"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="getConnection" returnType="Connection" visibility="protected"/>
+        <Method name="closeConnection" returnType="void" visibility="protected">
+          <Argument type="Connection" name="conn"/>
+          <Argument type="PreparedStatement" name="pst"/>
+          <Argument type="ResultSet" name="rs"/>
+        </Method>
+        <Method name="closeConnection" returnType="void" visibility="protected">
+          <Argument type="Connection" name="conn"/>
+          <Argument type="PreparedStatement" name="pst"/>
+        </Method>
+        <Method name="writeErrorConsole" returnType="void" visibility="protected">
+          <Argument type="SQLException" name="e"/>
+        </Method>
+        <Method name="writeErrorConsole" returnType="void" visibility="protected">
+          <Argument type="Exception" name="e"/>
+        </Method>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations/>
+</ClassDiagram>

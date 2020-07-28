@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="AreaResolutoraModel">
+  <ClassDiagramComponents>
+    <Class name="AreaResolutoraModel" package="cl.aiep.requerimiento.modelo" visibility="public" xPosition="74.0" yPosition="32.0">
+      <Fields>
+        <Field name="areaResolutoraId" type="int" visibility="private"/>
+        <Field name="descripcionArea" type="String" visibility="private"/>
+        <Field name="resolutor" type="ResolutorModel" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+        <Constructor visibility="public">
+          <Argument type="int" name="areaResolutoraId"/>
+          <Argument type="String" name="descripcionArea"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getResolutor" returnType="ResolutorModel" visibility="public"/>
+        <Method name="setResolutor" returnType="void" visibility="public">
+          <Argument type="ResolutorModel" name="resolutor"/>
+        </Method>
+        <Method name="getAreaResolutoraId" returnType="int" visibility="public"/>
+        <Method name="setAreaResolutoraId" returnType="void" visibility="public">
+          <Argument type="int" name="areaResolutoraId"/>
+        </Method>
+        <Method name="getDescripcionArea" returnType="String" visibility="public"/>
+        <Method name="setDescripcionArea" returnType="void" visibility="public">
+          <Argument type="String" name="descripcionArea"/>
+        </Method>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations/>
+</ClassDiagram>

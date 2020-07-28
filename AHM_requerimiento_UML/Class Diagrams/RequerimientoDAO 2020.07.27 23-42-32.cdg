@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="RequerimientoDAO">
+  <ClassDiagramComponents>
+    <Class name="RequerimientoDAO" package="cl.aiep.requerimiento.dao" visibility="public" xPosition="20.0" yPosition="20.0">
+      <Fields/>
+      <Constructors/>
+      <Methods>
+        <Method name="insert" returnType="boolean" visibility="public">
+          <Argument type="RequerimientoModel" name="model"/>
+        </Method>
+        <Method name="getQueryInsert" returnType="StringBuilder" visibility="private"/>
+        <Method name="update" returnType="boolean" visibility="public">
+          <Argument type="int" name="id"/>
+        </Method>
+        <Method name="getQueryUpdate" returnType="StringBuilder" visibility="private"/>
+        <Method name="getRequerimientos" returnType="List&lt;RequerimientoModel&gt;" visibility="public">
+          <Argument type="int" name="gerenciaId"/>
+          <Argument type="int" name="departamentoId"/>
+          <Argument type="int" name="areaResolutoraId"/>
+        </Method>
+        <Method name="getRequerimiento" returnType="RequerimientoModel" visibility="public">
+          <Argument type="int" name="id"/>
+        </Method>
+        <Method name="toModel" returnType="RequerimientoModel" visibility="private">
+          <Argument type="ResultSet" name="rs"/>
+        </Method>
+        <Method name="getQuerySelect" returnType="StringBuilder" visibility="private"/>
+        <Method name="delRequerimiento" returnType="boolean" visibility="public">
+          <Argument type="int" name="id"/>
+        </Method>
+        <Method name="getQueryDelete" returnType="StringBuilder" visibility="private"/>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations/>
+</ClassDiagram>

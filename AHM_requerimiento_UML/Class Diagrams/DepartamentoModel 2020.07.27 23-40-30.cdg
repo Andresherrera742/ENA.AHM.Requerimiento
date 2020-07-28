@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="DepartamentoModel">
+  <ClassDiagramComponents>
+    <Class name="DepartamentoModel" package="cl.aiep.requerimiento.modelo" visibility="public" xPosition="20.0" yPosition="20.0">
+      <Fields>
+        <Field name="departamentoId" type="int" visibility="private"/>
+        <Field name="descripcionDepartamento" type="String" visibility="private"/>
+        <Field name="gerenciaId" type="int" visibility="private"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="getDepartamentoId" returnType="int" visibility="public"/>
+        <Method name="setDepartamentoId" returnType="void" visibility="public">
+          <Argument type="int" name="departamentoId"/>
+        </Method>
+        <Method name="getDescripcionDepartamento" returnType="String" visibility="public"/>
+        <Method name="setDescripcionDepartamento" returnType="void" visibility="public">
+          <Argument type="String" name="descripcionDepartamento"/>
+        </Method>
+        <Method name="getGerenciaId" returnType="int" visibility="public"/>
+        <Method name="setGerenciaId" returnType="void" visibility="public">
+          <Argument type="int" name="gerenciaId"/>
+        </Method>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations/>
+</ClassDiagram>
