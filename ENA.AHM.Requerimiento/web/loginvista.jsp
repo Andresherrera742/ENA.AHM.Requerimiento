@@ -18,8 +18,8 @@
             <form action="requerimientoController.do" method="POST">
                 <div class="card shadow w-50 mx-auto">
 
-                    <div class="card-header">
-                        <h4>Acceso al sistema</h4>
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="text-center">Acceso al sistema</h4>
 
                     </div>
 
@@ -35,9 +35,9 @@
 
                         </div>
 
-                        <div class="form-group">
-                            
-                            <input type="checkbox" name="chkRecordar" value="Recordar" class="form-control">
+                        <div class="custom-control custom-checkbox">
+
+                            <input type="checkbox" name="chkRecordar" value="Recordar" class="form-Control,text-center">  Recordar Credenciales </input>
 
                         </div>
 
@@ -51,7 +51,7 @@
 
                     </div>
 
-                    <div class="card-footer" >
+                    <div class="card-footer bg-dark" >
                         <input type="submit" name="action" value="Acceder" class="btn btn-primary">
                     </div>
                 </div>
@@ -60,7 +60,7 @@
             </form>
 
 
-
+            <%@include file="/part/footer.jsp" %> 
         </div>
 
     </body>

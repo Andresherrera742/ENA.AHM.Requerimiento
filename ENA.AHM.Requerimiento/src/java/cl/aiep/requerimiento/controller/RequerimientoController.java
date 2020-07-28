@@ -60,14 +60,16 @@ public class RequerimientoController extends HttpServlet {
         switch (accion) {
 
             case "index":
+                verificaAccesoPermitido(request, response);
                 inicio(request, response);
                 break;
 
             case "nuevo":
+                verificaAccesoPermitido(request, response);
                 nuevoRequerimiento(request, response);
                 break;
 
-            case "cerrar":
+            case "editar":
                 cerrarRequerimiento(request, response);
                 break;
 
@@ -75,11 +77,6 @@ public class RequerimientoController extends HttpServlet {
                 verificaAccesoPermitido(request, response);
                 listarRequerimiento(request, response);
                 break;
-            
-            case "listarcerrar":
-                verificaAccesoPermitido(request, response);
-                listarRequerimientoConsulta(request, response);
-                break;    
 
             case "Grabar":
                 grabarRequerimiento(request, response);
@@ -92,7 +89,7 @@ public class RequerimientoController extends HttpServlet {
             default:
                 verificaAccesoPermitido(request, response);
 
-                if (cboGerencia != null  && !("".equals(cboGerencia))) {
+                if (cboGerencia != null && !("".equals(cboGerencia))) {
                     cambiarRequerimiento(request, response);
                 }
                 if (cboGerenciaConsulta != null && !("".equals(cboGerenciaConsulta))) {
@@ -103,7 +100,7 @@ public class RequerimientoController extends HttpServlet {
                     cambiarRequerimiento(request, response);
                 }
 
-                if (!("".equals(cboAreaResolutoraConsulta))) {
+                if (cboAreaResolutoraConsulta != null && !("".equals(cboAreaResolutoraConsulta))) {
                     cambiarRequerimientoConsulta(request, response);
                 }
 
@@ -170,12 +167,13 @@ public class RequerimientoController extends HttpServlet {
 
     private void cerrarRequerimiento(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         int id = Integer.parseInt(request.getParameter("id"));
- 
+        RequerimientoModel requerimiento = new RequerimientoDAO().getRequerimiento(id);
+
         String mensaje = "";
         String estiloMensaje = "";
-        
+
         boolean exito = new RequerimientoDAO().update(id);
 
         if (exito) {
@@ -185,10 +183,10 @@ public class RequerimientoController extends HttpServlet {
             mensaje = "Requerimiento no pudo ser Cerrado";
             estiloMensaje = "alert alert-danger text-center";
         }
-
+        request.setAttribute("requerimiento", requerimiento);
         request.setAttribute("mensaje", mensaje);
         request.setAttribute("estiloMensaje", estiloMensaje);
-        request.getRequestDispatcher("cerrarrequerimientovista.jsp").forward(request, response);
+        request.getRequestDispatcher("cerrarrequerimientosvista.jsp").forward(request, response);
 
     }
 
@@ -267,8 +265,11 @@ public class RequerimientoController extends HttpServlet {
         request.getRequestDispatcher("ingresorequerimientovista.jsp").forward(request, response);
 
     }
-        private void listarRequerimientoConsulta(HttpServletRequest request, HttpServletResponse response)
+
+    private void listarRequerimientoConsulta(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        cargaCboBase(request, response);
 
         int idGerencia = getIDDesdeCombo(request, response, "cboGerenciaConsulta");
         int idDepartamento = getIDDesdeCombo(request, response, "cboDepartamentoConsulta");
@@ -276,17 +277,18 @@ public class RequerimientoController extends HttpServlet {
 
         List<RequerimientoModel> entidades = new RequerimientoDAO().getRequerimientos(idGerencia, idDepartamento, idAreaResolutora);
         request.setAttribute("requerimientos", entidades);
-        request.getRequestDispatcher("cerrarrequerimientovista.jsp").forward(request, response);
+        request.getRequestDispatcher("cerrarrequerimientosvista.jsp").forward(request, response);
 
     }
 
     private void listarRequerimiento(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        cargaCboBase(request, response);
+
         int idGerencia = getIDDesdeCombo(request, response, "cboGerencia");
         int idDepartamento = getIDDesdeCombo(request, response, "cboDepartamento");
         int idAreaResolutora = getIDDesdeCombo(request, response, "cboAreaResolutora");
-      
 
         List<RequerimientoModel> entidades = new RequerimientoDAO().getRequerimientos(idGerencia, idDepartamento, idAreaResolutora);
         request.setAttribute("requerimientos", entidades);
@@ -301,15 +303,12 @@ public class RequerimientoController extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("hidId"));
 
         requerimiento.setRequerimientoId(id);
-        
-        
+
         int gerenciaId = getIDDesdeCombo(request, response, "cboGerencia");
         List<DepartamentoModel> departamentos = new DepartamentoDAO().getDepartamentos(gerenciaId);
 
         int areaResolutorId = getIDDesdeCombo(request, response, "cboAreaResolutora");
         List<ResolutorModel> resolutores = new ResolutorDAO().getResolutores(areaResolutorId);
-
-
 
         GerenciaModel gerencia = new GerenciaModel();
         gerencia.setGerenciaId(gerenciaId);
@@ -367,22 +366,17 @@ public class RequerimientoController extends HttpServlet {
         areaResolutora.setAreaResolutoraId(idAreaResolutora);
         requerimiento.setAreaResolutora(areaResolutora);
 
-
-
-   
-
         request.setAttribute("requerimiento", requerimiento);
         request.setAttribute("departamentos", departamentos);
- 
 
         cargaCboBase(request, response);
 
-        request.getRequestDispatcher("cerrarrequerimientovista.jsp").forward(request, response);
+        request.getRequestDispatcher("cerrarrequerimientosvista.jsp").forward(request, response);
     }
 
     private int getIDDesdeCombo(HttpServletRequest request, HttpServletResponse response, String nameCombo)
             throws ServletException, IOException {
-        
+
         String valor = request.getParameter(nameCombo);
         int id = 0;
         if (valor != null && !("".equals(valor))) {

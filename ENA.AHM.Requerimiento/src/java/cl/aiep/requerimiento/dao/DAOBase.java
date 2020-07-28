@@ -20,8 +20,8 @@ public class DAOBase {
     private Connection conn = null;
     private final String dbName = "jdbc:mysql://localhost:3306/requerimientos?serverTimezone=UTC";
     private final String driver = "com.mysql.jdbc.Driver";
-    private final String user = "root";        
-    private final String pass = "nicolas742";
+    private final String user = "aherrera";        
+    private final String pass = "Nicolas742";
     
         protected Connection getConnection(){
         try{            

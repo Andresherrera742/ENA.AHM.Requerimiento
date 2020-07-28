@@ -9,7 +9,7 @@
 
 <!DOCTYPE html>
 
-<title>Requerimientos</title>
+<title>Cerrar Requerimientos</title>
 <html>    
     <%@include file="/part/head.jsp" %>
 
@@ -34,7 +34,7 @@
                             <c:forEach  var="g"  items="${gerencias}" >
 
                                 <option value="${g.gerenciaId}"  
-                                    ${g.gerenciaId == requerimiento.getGerencia().getGerenciaId() ? ' selected ' : ' '}>
+                                        ${g.gerenciaId == requerimiento.getGerencia().getGerenciaId() ? ' selected ' : ' '}>
 
 
                                     ${g.descripcionGerencia}
@@ -71,7 +71,7 @@
                             <c:forEach  var="ar"  items="${areaResolutoras}" >
 
                                 <option value="${ar.areaResolutoraId}"
-                                    ${ar.areaResolutoraId == requerimiento.getAreaResolutora().getAreaResolutoraId() ? ' selected ' : ' '  } >
+                                        ${ar.areaResolutoraId == requerimiento.getAreaResolutora().getAreaResolutoraId() ? ' selected ' : ' '  } >
                                     ${ar.descripcionArea}
                                 </option>
 
@@ -101,7 +101,6 @@
                                     <th>Estado</th>
                                     <th>Fecha Cierre</th>
                                     <th></th>
-                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -117,13 +116,19 @@
                                         <td>${requerimiento.requerimiento}</td>
                                         <td>${requerimiento.estado}</td>
                                         <td>${requerimiento.fechaCierre}</td>
-
-
+                                        <td>
+                                            <a href="requerimientoController.do?action=editar&id=${requerimiento.requerimientoId}"
+                                               class="btn btn-danger" onclick=" return confirm('¿Seguro que desea Cerrar el Requerimiento?)')">Cerrar</a>                                    
+                                        </td> 
 
                                     </tr>                            
                                 </c:forEach>                            
 
                             </tbody>
+
+                            <div class="${estiloMensaje}" role="alert">
+                                ${mensaje}                                
+                            </div>
 
                         </table>  
 
@@ -131,7 +136,6 @@
                 </div>     
 
             </div> 
-
 
             <%@include file="/part/footer.jsp" %> 
 

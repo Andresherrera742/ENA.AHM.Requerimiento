@@ -36,7 +36,6 @@ public class RequerimientoDAO extends DAOBase {
             pst.setInt(3, model.getAreaResolutora().getAreaResolutoraId());
             pst.setInt(4, model.getResolutor().getResolutorId());
             pst.setString(5, model.getRequerimiento());
-            
 
             int afectados = pst.executeUpdate();
             status = (afectados > 0);
@@ -72,7 +71,7 @@ public class RequerimientoDAO extends DAOBase {
         query.append("  ,?");
         query.append("  ,sysdate()");
         query.append("  ,?");
-        query.append("  ,Abierto");
+        query.append("  ,'Abierto' ");
         query.append(" ) ");
 
         return query;
@@ -87,7 +86,7 @@ public class RequerimientoDAO extends DAOBase {
             conn = getConnection();
             pst = conn.prepareStatement(getQueryUpdate().toString());
             pst.setInt(1, id);
-          
+
             int afectados = pst.executeUpdate();
             status = (afectados > 0);
 
@@ -98,7 +97,7 @@ public class RequerimientoDAO extends DAOBase {
         }
 
         return status;
-        
+
     }
 
     private StringBuilder getQueryUpdate() {
@@ -107,7 +106,7 @@ public class RequerimientoDAO extends DAOBase {
 
         query.append(" UPDATE requerimiento ");
         query.append(" SET ");
-        query.append("  ,estado = 'Cerrado'");
+        query.append("  estado = 'Cerrado'");
         query.append("  ,fechaCierre = sysdate()");
         query.append(" WHERE ");
         query.append("    requerimientoId = ? ");
@@ -121,10 +120,9 @@ public class RequerimientoDAO extends DAOBase {
         Connection conn = null;
         PreparedStatement pst = null;
         ResultSet rs = null;
-       
 
         try {
-            
+
             conn = getConnection();
             StringBuilder query = getQuerySelect();
 
@@ -140,22 +138,21 @@ public class RequerimientoDAO extends DAOBase {
                 query.append("AND re.areaResolutoraId = ?");
             }
 
-            
             pst = conn.prepareStatement(query.toString());
             int n = 0;
-           
+
             if (gerenciaId > 0) {
-                n ++;
+                n= n+1;
                 pst.setInt(n, gerenciaId);
             }
 
             if (departamentoId > 0) {
-                n ++;
+                n= n+1;
                 pst.setInt(n, departamentoId);
             }
 
             if (areaResolutoraId > 0) {
-                n ++;
+                n= n+1;
                 pst.setInt(n, areaResolutoraId);
             }
 
@@ -226,9 +223,10 @@ public class RequerimientoDAO extends DAOBase {
             resolutor.setResolutorId(rs.getInt("resolutorId"));
             resolutor.setNombreResolutor(rs.getString("r.nombreResolutor"));
             requerimiento.setResolutor(resolutor);
-
+            requerimiento.setFechaIngreso(rs.getDate("fechaIngreso"));
             requerimiento.setRequerimiento(rs.getString("requerimiento"));
             requerimiento.setEstado(rs.getString("estado"));
+            requerimiento.setFechaCierre(rs.getDate("fechaCierre"));
 
         } catch (SQLException ex) {
             writeErrorConsole(ex);
@@ -249,8 +247,8 @@ public class RequerimientoDAO extends DAOBase {
         query.append(" ,re.areaResolutoraId ");
         query.append(" ,ar.descripcionArea ");
         query.append(" ,re.resolutorId ");
-        query.append(" ,re.fechaIngreso ");
         query.append(" ,r.nombreResolutor  ");
+        query.append(" ,re.fechaIngreso ");
         query.append(" ,re.requerimiento ");
         query.append(" ,re.estado ");
         query.append(" ,re.fechaCierre ");
